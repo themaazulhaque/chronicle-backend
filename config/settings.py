@@ -75,6 +75,11 @@ DATABASES = {
     }
 }
 
+DATABASES['default']['OPTIONS']['host'] = os.getenv('POSTGRES_SSLHOST', '') or None
+_db_hostaddr = os.getenv('POSTGRES_HOSTADDR', '')
+if _db_hostaddr:
+    DATABASES['default']['OPTIONS']['hostaddr'] = _db_hostaddr
+
 AUTH_USER_MODEL = 'users.User'
 
 AUTH_PASSWORD_VALIDATORS = [
