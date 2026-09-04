@@ -103,10 +103,15 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-CORS_ALLOW_ALL_ORIGINS = DEBUG
-if not DEBUG:
-    cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', '').strip()
-    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins.split(',') if o.strip()] if cors_origins else []
+cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', '').strip()
+if cors_origins == '*' or DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+elif cors_origins:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins.split(',') if o.strip()]
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = []
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
